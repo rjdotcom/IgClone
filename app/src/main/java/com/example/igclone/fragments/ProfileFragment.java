@@ -35,10 +35,7 @@ public class ProfileFragment extends PostFragment{
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvPosts.setAdapter(adapter);
         rvPosts.setLayoutManager(gridLayoutManager);
-        RecyclerView.ItemDecoration itemDecoration = new
-                DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
-        rvPosts.addItemDecoration(itemDecoration);
-        rvPosts.setItemAnimator(new SlideInUpAnimator());
+
         queryPost();
     }
 

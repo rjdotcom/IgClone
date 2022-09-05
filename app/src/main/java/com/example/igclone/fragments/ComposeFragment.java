@@ -123,6 +123,10 @@ public class ComposeFragment extends Fragment {
             if (resultCode == RESULT_OK) {
                 // by this point we have the camera photo on disk
                 Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                btnPost.setVisibility(View.VISIBLE);
+                btnCapture.setVisibility(View.INVISIBLE);
+                etCaption.setVisibility(View.VISIBLE);
+                ivPost.setVisibility(View.VISIBLE);
 
                 // Load the taken image into a preview
                 ivPost.setImageBitmap(takenImage);
@@ -164,6 +168,10 @@ public class ComposeFragment extends Fragment {
                 Log.i(TAG, "Post Saved succesfully!");
                 etCaption.setText("");
                 ivPost.setImageResource(0);
+                btnPost.setVisibility(View.INVISIBLE);
+                btnCapture.setVisibility(View.VISIBLE);
+                etCaption.setVisibility(View.INVISIBLE);
+                ivPost.setVisibility(View.INVISIBLE);
             }
         });
     }

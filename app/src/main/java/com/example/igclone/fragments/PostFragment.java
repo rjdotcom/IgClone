@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ public class PostFragment extends Fragment {
     public static final String TAG="PostFragment";
     protected PostAdapter adapter;
     protected List<Post> allPosts;
+    SwipeRefreshLayout swipeRefresh;
 
 
     public PostFragment() {
@@ -50,6 +52,23 @@ public class PostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rvPosts = view.findViewById(R.id.rvPosts);
+        swipeRefresh = view.findViewById(R.id.swipeRefresh);
+
+        // Configure the refreshing colors
+        swipeRefresh.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                queryPost();
+            }
+        });
+
+
+
         allPosts = new ArrayList<>();
         adapter = new PostAdapter(getContext(), allPosts);
 
@@ -75,8 +94,11 @@ public class PostFragment extends Fragment {
                 for(Post post : posts){
                     Log.i(TAG, "Post " + post.getDescription() +" username: " + post.getUser().getUsername());
                 }
-                allPosts.addAll(posts);
+                adapter.clear();
+                adapter.addAll(posts);
                 adapter.notifyDataSetChanged();
+                swipeRefresh.setRefreshing(false);
+
 
             }
         });

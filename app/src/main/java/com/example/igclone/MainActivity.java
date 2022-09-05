@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,6 +37,7 @@ import com.parse.SaveCallback;
 
 import java.io.File;
 import java.util.List;
+import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         bottomNavigation = findViewById(R.id.bottomNavigation);
+        Toolbar toolbar =findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
 
 
