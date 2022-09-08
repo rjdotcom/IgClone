@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.igclone.MainActivity;
@@ -47,6 +48,7 @@ public class ComposeFragment extends Fragment {
     private Button btnPost;
     private File photoFile;
     public String photoFileName = "photo.jpg";
+    ProgressBar progressBar;
 
 
 
@@ -71,6 +73,7 @@ public class ComposeFragment extends Fragment {
         btnCapture = view.findViewById(R.id.btnCapture);
         ivPost = view.findViewById(R.id.ivPost);
         btnPost = view.findViewById(R.id.btnPost);
+        progressBar = view.findViewById(R.id.progressBar);
 
         btnCapture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +130,7 @@ public class ComposeFragment extends Fragment {
                 btnCapture.setVisibility(View.INVISIBLE);
                 etCaption.setVisibility(View.VISIBLE);
                 ivPost.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(ProgressBar.VISIBLE);
 
                 // Load the taken image into a preview
                 ivPost.setImageBitmap(takenImage);
@@ -168,6 +172,7 @@ public class ComposeFragment extends Fragment {
                 Log.i(TAG, "Post Saved succesfully!");
                 etCaption.setText("");
                 ivPost.setImageResource(0);
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
                 btnPost.setVisibility(View.INVISIBLE);
                 btnCapture.setVisibility(View.VISIBLE);
                 etCaption.setVisibility(View.INVISIBLE);

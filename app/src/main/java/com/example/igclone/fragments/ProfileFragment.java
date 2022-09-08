@@ -49,6 +49,7 @@ public class ProfileFragment extends Fragment {
                 currentUser.logOut();
                 Intent i = new Intent(getContext(), LoginActivity.class);
                 startActivity(i);
+
             }
         });
 
