@@ -25,13 +25,16 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
 public class ProfileFragment extends Fragment {
-   Button btnLogout;
-
+    Button btnLogout;
+    GridView GridView;
+    GridAdapter adapter;
+    ArrayList<Post> list;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,6 +45,8 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnLogout= view.findViewById(R.id.btnLogout);
+        GridView = view.findViewById(R.id.GridView);
+
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,37 +58,35 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-//        StaggeredGridLayoutManager gridLayoutManager =
-//                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-//        rvPosts.setAdapter(adapter);
-//        rvPosts.setLayoutManager(gridLayoutManager);
+       list = new ArrayList<>();
+       adapter = new GridAdapter(getContext(),list);
+        GridView.setAdapter(adapter);
 
-//        queryPost();
+
+        queryPost();
     }
 
-//    @Override
-//    protected void queryPost() {
-//        // Specify which class to query
-//        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-//        query.include(Post.KEY_USER);
-//        query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
-//        query.setLimit(20);
-//        query.addDescendingOrder(Post.KEY_CREATEDAT);
-//        query.findInBackground(new FindCallback<Post>() {
-//            @Override
-//            public void done(List<Post> posts, ParseException e) {
-//                if(e != null){
-//                    Log.e(TAG,"issue getting post",e);
-//                    return;
-//                }
-//                for(Post post : posts){
-//                    Log.i(TAG, "Post " + post.getDescription() +" username: " + post.getUser().getUsername());
-//                }
-//                allPosts.addAll(posts);
-//                adapter.notifyDataSetChanged();
-//
-//            }
-//        });
-//        super.queryPost();
-//    }
+
+    protected void queryPost() {
+        // Specify which class to query
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        query.include(Post.KEY_USER);
+        query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
+        query.setLimit(20);
+        query.addDescendingOrder(Post.KEY_CREATEDAT);
+        query.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> posts, ParseException e) {
+                if(e != null){
+
+                    return;
+                }
+
+                list.addAll(posts);
+                adapter.notifyDataSetChanged();
+
+            }
+        });
+
+    }
 }
