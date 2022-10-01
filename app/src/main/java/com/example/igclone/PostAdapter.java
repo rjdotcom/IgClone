@@ -1,6 +1,8 @@
 package com.example.igclone;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +10,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.igclone.fragments.DetailActivity;
+import com.example.igclone.fragments.ProfileFragment;
 import com.parse.ParseFile;
+import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -59,12 +68,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     }
 
+
     class ViewHolder extends RecyclerView.ViewHolder{
 
         private TextView tvUsername;
         private TextView tvUsername2;
         private TextView  tvCaption;
         private ImageView imagePost;
+        ParseUser currentUser;
+
+        ImageView ivProfile;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,6 +85,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             tvUsername2 = itemView.findViewById(R.id.tvusername2);
             tvCaption = itemView.findViewById(R.id.tvCaption);
             imagePost = itemView.findViewById(R.id.imagePost);
+            ivProfile = itemView.findViewById(R.id.ivProfile);
 
         }
 
@@ -84,9 +98,33 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             if (image != null) {
                 Glide.with(context).load(post.getImage().getUrl()).into(imagePost);
             }
+            Glide.with(context).load(post.getUser().getParseFile("profile").getUrl()).into(ivProfile);
 
 
+            imagePost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(context, DetailActivity.class);
+                    i.putExtra("post", Parcels.wrap(post));
+                    context.startActivity(i);
+
+                }
+            });
+         ivProfile.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                 ProfileFragment profileFragment = ProfileFragment.newInstance("Some Title");
+                 Bundle bundle = new Bundle();
+                 bundle.putParcelable("Post", Parcels.wrap(post));
+                 profileFragment.setArguments(bundle);
+
+                 fragmentManager.beginTransaction().replace(R.id.flContainer, profileFragment).commit();
+             }
+         });
         }
+
+
     }
 
 }

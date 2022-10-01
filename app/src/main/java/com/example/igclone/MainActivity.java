@@ -1,6 +1,7 @@
 package com.example.igclone;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +25,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.bumptech.glide.Glide;
 import com.example.igclone.fragments.ComposeFragment;
 import com.example.igclone.fragments.PostFragment;
 import com.example.igclone.fragments.ProfileFragment;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
     final FragmentManager fragmentManager = getSupportFragmentManager();
     private BottomNavigationView bottomNavigation;
+
 
 
     @Override

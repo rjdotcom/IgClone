@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.example.igclone.LoginActivity;
 import com.example.igclone.Post;
 import com.example.igclone.R;
@@ -25,16 +28,31 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
 public class ProfileFragment extends Fragment {
     Button btnLogout;
-    GridView GridView;
+    GridView gridView;
     GridAdapter adapter;
     ArrayList<Post> list;
+    ImageView ivProfile;
+    TextView username;
+    ParseUser currentUser;
+
+    public static ProfileFragment newInstance(String title) {
+        ProfileFragment frag = new ProfileFragment();
+        Bundle args = new Bundle();
+        args.putString("title", title);
+        frag.setArguments(args);
+        return frag;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,12 +63,21 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnLogout= view.findViewById(R.id.btnLogout);
-        GridView = view.findViewById(R.id.GridView);
+        gridView = view.findViewById(R.id.gridView);
+        ivProfile = view.findViewById(R.id.ivProfile);
+        username = view.findViewById(R.id.tvUname);
+        Bundle bundle = getArguments();
+        if (bundle==null){
+            currentUser = ParseUser.getCurrentUser(); // this will now be null
+        }else{
+            Post post = Parcels.unwrap(bundle.getParcelable("Post"));
+            currentUser = post.getUser(); // get user clicked on
+        }
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+
                 currentUser.logOut();
                 Intent i = new Intent(getContext(), LoginActivity.class);
                 startActivity(i);
@@ -60,10 +87,13 @@ public class ProfileFragment extends Fragment {
 
        list = new ArrayList<>();
        adapter = new GridAdapter(getContext(),list);
-        GridView.setAdapter(adapter);
+       gridView.setAdapter(adapter);
 
+       username.setText(currentUser.getUsername());
 
-        queryPost();
+       Glide.with(getContext()).load(currentUser.getParseFile("profile").getUrl()).into(ivProfile);
+
+       queryPost();
     }
 
 

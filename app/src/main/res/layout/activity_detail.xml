@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
-   >
+    >
 
     <ImageView
         android:id="@+id/ivProfile"
@@ -21,7 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="30dp"
         android:layout_toEndOf="@id/ivProfile"
         android:text="kylexy"
         android:textColor="@color/black"
@@ -43,7 +42,7 @@
         android:layout_marginTop="4dp"
         android:layout_below="@id/imagePost"
         android:drawableLeft="@drawable/like"
-         />
+        />
 
     <TextView
         android:id="@+id/tvComment"
@@ -55,7 +54,7 @@
         android:layout_toEndOf="@id/tvlike"
         android:drawableLeft="@drawable/comment"
 
-      />
+        />
 
     <TextView
         android:id="@+id/tvShare"

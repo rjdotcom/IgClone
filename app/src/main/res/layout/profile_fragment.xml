@@ -16,29 +16,31 @@
 
     <ImageView
         android:id="@+id/ivProfile"
-        android:layout_width="80dp"
+        android:layout_width="70dp"
         android:layout_height="80dp"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="5dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/tvUname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="30dp"
         android:layout_toEndOf="@id/ivProfile"
-        android:text="Kyle XY"
-        android:textStyle="bold" />
+        android:textColor="#000000"
+        android:textStyle="bold"
+        tools:text="Kyle XY" />
 
     <GridView
-        android:id="@+id/GridView"
+        android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/ivProfile"
         android:layout_marginTop="5dp"
-        android:horizontalSpacing="10dp"
-        android:numColumns="2"
-        android:verticalSpacing="10dp" />
+        android:horizontalSpacing="2dp"
+        android:numColumns="3"
+        android:verticalSpacing="3dp" />
+
 </RelativeLayout>
