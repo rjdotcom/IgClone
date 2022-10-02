@@ -36,24 +36,26 @@
         android:scaleType="centerCrop"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
+
+    <ImageButton
         android:id="@+id/tvlike"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_below="@id/imagePost"
-        android:drawableLeft="@drawable/like"
-         />
+        android:layout_marginTop="0dp"
+        android:backgroundTint="@android:color/transparent"
+        android:src="@drawable/like"/>
 
-    <TextView
+
+    <ImageButton
         android:id="@+id/tvComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/imagePost"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="4dp"
+       android:backgroundTint="@android:color/transparent"
         android:layout_toEndOf="@id/tvlike"
-        android:drawableLeft="@drawable/comment"
+       android:src="@drawable/comment"
 
       />
 
@@ -109,6 +111,25 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_below="@id/tvusername2"/>
+
+    <TextView
+        android:id="@+id/tvNumLikes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvusername2"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:text="0Likes" />
+
+    <TextView
+        android:id="@+id/tvNumofComments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/tvusername2"
+        android:layout_toEndOf="@id/tvNumLikes"
+        android:text="0Comments"/>
 
 
 </RelativeLayout>

@@ -2,14 +2,18 @@ package com.example.igclone;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,13 +24,17 @@ import com.example.igclone.fragments.ProfileFragment;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 
+import org.json.JSONException;
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private Context context;
     private List<Post> posts;
+    private static ArrayList<String> likersList;
+    TextView tvNumLikes;
 
     public PostAdapter(Context context, List<Post> posts) {
         this.context = context;
@@ -76,7 +84,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         private TextView  tvCaption;
         private ImageView imagePost;
         ParseUser currentUser;
-
+        public int like;
+        ImageButton tvlike;
         ImageView ivProfile;
 
         public ViewHolder(@NonNull View itemView) {
@@ -86,8 +95,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             tvCaption = itemView.findViewById(R.id.tvCaption);
             imagePost = itemView.findViewById(R.id.imagePost);
             ivProfile = itemView.findViewById(R.id.ivProfile);
-
+            tvlike = itemView.findViewById(R.id.tvlike);
+            tvNumLikes = itemView.findViewById(R.id.tvNumLikes);
         }
+        
+        
 
         public void bind(Post post) {
 //            Bind data into the view Element
@@ -99,6 +111,53 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 Glide.with(context).load(post.getImage().getUrl()).into(imagePost);
             }
             Glide.with(context).load(post.getUser().getParseFile("profile").getUrl()).into(ivProfile);
+
+            currentUser = ParseUser.getCurrentUser();
+
+            try {
+                likersList =Post.fromJsonArray(post.getLikes());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            // set color for heart
+            try{
+                if (likersList.contains(currentUser.getObjectId())) {
+                    Drawable drawable = ContextCompat.getDrawable(context, R.drawable.heart);
+                    tvlike.setImageDrawable(drawable);
+                }else {
+                    Drawable drawable = ContextCompat.getDrawable(context, R.drawable.like);
+                    tvlike.setImageDrawable(drawable);
+                }
+            }catch (NullPointerException e){
+                e.printStackTrace();
+            }
+
+
+            tvlike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    like = post.getNumLikes();
+                    int index;
+
+                    if (!likersList.contains(currentUser.getObjectId())){
+                        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.heart);
+                        tvlike.setImageDrawable(drawable);
+                        like++;
+                        index = -1;
+
+                    }else {
+                        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.like);
+                        tvlike.setImageDrawable(drawable);
+                        like--;
+                        index = likersList.indexOf(currentUser.getObjectId());
+                    }
+
+                    tvNumLikes.setText(String.valueOf(like) + " likes");
+                    saveLike(post, like, index, currentUser);
+                }
+            });
+
 
 
             imagePost.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +184,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         }
 
 
+    }
+
+    private void saveLike(Post post, int like, int index, ParseUser currentUser) {
+        post.setNumberLike(like);
+
+        if (index == -1){
+            post.setListLikers(currentUser);
+            likersList.add(currentUser.getObjectId());
+        }else {
+            likersList.remove(index);
+            post.removeItemListLikers(likersList);
+        }
     }
 
 }
