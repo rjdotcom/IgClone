@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.igclone.Post;
 import com.example.igclone.R;
 import com.parse.ParseFile;
@@ -40,6 +41,6 @@ public class DetailActivity extends AppCompatActivity {
         if (image != null) {
             Glide.with(DetailActivity.this).load(post.getImage().getUrl()).into(imagePost);
         }
-        Glide.with(DetailActivity.this).load(post.getUser().getParseFile("profile").getUrl()).into(ivProfile);
+        Glide.with(DetailActivity.this).load(post.getUser().getParseFile("profile").getUrl()).transform(new CircleCrop()).into(ivProfile);
     }
 }

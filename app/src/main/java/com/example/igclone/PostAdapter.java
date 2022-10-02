@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +18,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.igclone.fragments.DetailActivity;
 import com.example.igclone.fragments.ProfileFragment;
 import com.parse.ParseFile;
@@ -34,7 +36,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private Context context;
     private List<Post> posts;
     private static ArrayList<String> likersList;
-    TextView tvNumLikes;
+
 
     public PostAdapter(Context context, List<Post> posts) {
         this.context = context;
@@ -84,9 +86,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         private TextView  tvCaption;
         private ImageView imagePost;
         ParseUser currentUser;
-        public int like;
-        ImageButton tvlike;
         ImageView ivProfile;
+        public int like;
+        ImageButton ibLike;
+        TextView tvNumLikes;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -95,7 +98,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             tvCaption = itemView.findViewById(R.id.tvCaption);
             imagePost = itemView.findViewById(R.id.imagePost);
             ivProfile = itemView.findViewById(R.id.ivProfile);
-            tvlike = itemView.findViewById(R.id.tvlike);
+            ibLike = itemView.findViewById(R.id.iBtnlike);
             tvNumLikes = itemView.findViewById(R.id.tvNumLikes);
         }
         
@@ -110,7 +113,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             if (image != null) {
                 Glide.with(context).load(post.getImage().getUrl()).into(imagePost);
             }
-            Glide.with(context).load(post.getUser().getParseFile("profile").getUrl()).into(ivProfile);
+            Glide.with(context).load(post.getUser().getParseFile("profile").getUrl()).transform(new CircleCrop()).into(ivProfile);
 
             currentUser = ParseUser.getCurrentUser();
 
@@ -124,17 +127,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             try{
                 if (likersList.contains(currentUser.getObjectId())) {
                     Drawable drawable = ContextCompat.getDrawable(context, R.drawable.heart);
-                    tvlike.setImageDrawable(drawable);
+                    ibLike.setImageDrawable(drawable);
                 }else {
                     Drawable drawable = ContextCompat.getDrawable(context, R.drawable.like);
-                    tvlike.setImageDrawable(drawable);
+                    ibLike.setImageDrawable(drawable);
                 }
             }catch (NullPointerException e){
                 e.printStackTrace();
             }
 
 
-            tvlike.setOnClickListener(new View.OnClickListener() {
+            ibLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     like = post.getNumLikes();
@@ -142,13 +145,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
                     if (!likersList.contains(currentUser.getObjectId())){
                         Drawable drawable = ContextCompat.getDrawable(context, R.drawable.heart);
-                        tvlike.setImageDrawable(drawable);
+                        ibLike.setImageDrawable(drawable);
                         like++;
                         index = -1;
 
                     }else {
                         Drawable drawable = ContextCompat.getDrawable(context, R.drawable.like);
-                        tvlike.setImageDrawable(drawable);
+                        ibLike.setImageDrawable(drawable);
                         like--;
                         index = likersList.indexOf(currentUser.getObjectId());
                     }

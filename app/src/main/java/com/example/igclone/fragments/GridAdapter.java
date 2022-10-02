@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.example.igclone.Post;
 import com.example.igclone.R;
 
@@ -35,7 +36,7 @@ public class GridAdapter extends ArrayAdapter<Post> {
 
         Post post = getItem(position);
         ImageView ivGrid = listItemView.findViewById(R.id.ivGrid);
-        Glide.with(getContext()).load(post.getImage().getUrl()).into(ivGrid);
+        Glide.with(getContext()).load(post.getImage().getUrl()).transform(new CenterCrop()).into(ivGrid);
         return listItemView;
     }
 }
