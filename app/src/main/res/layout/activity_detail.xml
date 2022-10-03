@@ -129,4 +129,14 @@
         android:text="0Comments"/>
 
 
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="3dp"
+        android:layout_below="@id/tvNumLikes"
+        android:text="01/01/01" />
+
+
 </RelativeLayout>

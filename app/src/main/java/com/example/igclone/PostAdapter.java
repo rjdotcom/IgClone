@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
@@ -85,6 +86,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         private TextView tvUsername2;
         private TextView  tvCaption;
         private ImageView imagePost;
+        private TextView tvDate;
         ParseUser currentUser;
         ImageView ivProfile;
         public int like;
@@ -100,6 +102,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             ivProfile = itemView.findViewById(R.id.ivProfile);
             ibLike = itemView.findViewById(R.id.iBtnlike);
             tvNumLikes = itemView.findViewById(R.id.tvNumLikes);
+            tvDate = itemView.findViewById(R.id.tvDate);
         }
         
         
@@ -109,6 +112,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             tvUsername.setText(post.getUser().getUsername());
             tvUsername2.setText(post.getUser().getUsername());
             tvCaption.setText(post.getDescription());
+            tvDate.setText(TimeFormatter.getTimeStamp(post.getCreatedAt().toString()));
             ParseFile image = post.getImage();
             if (image != null) {
                 Glide.with(context).load(post.getImage().getUrl()).into(imagePost);
